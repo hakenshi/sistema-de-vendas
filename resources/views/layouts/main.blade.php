@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -25,25 +26,38 @@
                         <span class="p-3">Home</span>
                     </a>
                     <ul class="navbar navbar-nav">
+                        @auth
+                        @php
+                            $user = auth()->user();
+                        @endphp
+                    </li>
+                    <li class="p-2 nav-item">
+                        <span><a href="/dashboard" class="nav-link">Olá, {{ $user->name }}.</a></span>
+                    </li>
+                    <li class="p-2 nav-item">
+                        <form method="POST" action="/logout">
+                            @csrf
+                            <span>
+                                <a href="/logout" class="nav-link" onclick="event.preventDefault(); this.closest('form').submit();">
+                                    Sair
+                                </a>
+                            </span>
+                        </form>
+                    </li>
+                        
+                        @else
                         <li class="p-2 nav-item">
                             <span><a href="/login" class="nav-link">Login</a></span>
                         </li>
                         <li class="p-2 nav-item">
                             <span><a href="/register" class="nav-link">Registro</a></span>
-                        </li>
-                        @auth
-                        <li class="p-2 nav-item">
-                            <span><a href="/register" class="nav-link">Olá, usuário.</a></span>
-                        </li>
                         @endauth
                         <li class="p-2 nav-item">
                             <a href="" class="nav-link"><span>
                                     <ion-icon class="icon" name="cart-outline"></ion-icon>
                                 </span></a>
                         </li>
-                        <li class="p-2 nav-item">
-                            <span><a href="#" class="nav-link">Sair</a></span>
-                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -51,7 +65,6 @@
 
     </header>
     <main>
-
         <div class="container">
             <div class="row">
                 @yield('content')
@@ -59,13 +72,7 @@
         </div>
     </main>
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-10 offset-md-5">
-                    <small>&copy; project by: XD</small>
-                </div>
-            </div>
-        </div>
+        <small>&copy; project by: Felipe</small>
     </footer>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -78,6 +85,7 @@
     </script>
     <script src="/js/jquery-3.7.1.min.js"></script>
     <script src="/js/script.js"></script>
+    <script src="/js/ajax.js"></script>
 </body>
 
 </html>

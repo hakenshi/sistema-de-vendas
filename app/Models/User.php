@@ -18,6 +18,8 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,8 +27,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'bio_info',
         'email',
         'password',
+        'profile_path_photo',
     ];
 
     /**
@@ -58,4 +62,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function produto(){
+        return $this->hasMany(Produto::class, 'user_id');
+    }
+
 }
