@@ -23,9 +23,12 @@ class Produto extends Model
         'imagem_produto',
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class, 'id');
+    public function produto(){
+        return $this->belongsToMany(Venda::class);
     }
 
+    public function estoque(){
+        return $this->belongsTo(Estoque::class);
+    }
 
 }

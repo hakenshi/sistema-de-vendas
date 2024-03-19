@@ -30,7 +30,7 @@ class User extends Authenticatable
         'bio_info',
         'email',
         'password',
-        'profile_path_photo',
+        'profile_photo_path',
     ];
 
     /**
@@ -40,31 +40,14 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
     ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array<int, string>
-     */
+        
     protected $appends = [
         'profile_photo_url',
     ];
 
-    public function produto(){
-        return $this->hasMany(Produto::class, 'user_id');
+    public function venda(){
+        return $this->hasMany(Venda::class, 'id_usuario');
     }
 
 }

@@ -4,13 +4,11 @@
 
 @section('content')
 
-@dd($user)
-
     <div class="col-md-auto offset-md-1">
         <div class="usuario-container">
             <div class="row">
                 <div class="profile-image-container">
-                    <img src="/storage/server/user-photos/{{ $user->profile_photo_path }}" alt="">
+                    <img src="/storage/server/userphotos/{{ $user->profile_photo_path }}" alt="">
                     <p>Olá, {{ $user->name }}</p>
                 </div>
             </div>

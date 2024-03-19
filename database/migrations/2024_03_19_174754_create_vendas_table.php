@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->text('bio_info')->nullable()->after('email');
+        Schema::create('vendas', function (Blueprint $table) {
+            $table->id();
+            $table->integer('quantidade_venda');
+            $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('bio_info');
-        });
+        Schema::dropIfExists('vendas');
     }
 };

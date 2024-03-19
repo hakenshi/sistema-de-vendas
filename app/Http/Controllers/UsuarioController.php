@@ -50,7 +50,6 @@ class UsuarioController extends Controller
            
         }
 
-
         $user->update($data);
 
         return redirect('/dashboard')->with('msg', 'Informações atualizadas com sucesso');

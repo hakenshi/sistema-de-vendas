@@ -4,6 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use function Livewire\on;
+
 return new class extends Migration
 {
     /**
@@ -11,12 +13,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('produtos', function (Blueprint $table) {
-            $table->id();
-            $table->string('nome_produto');
-            $table->text('descricao_produto');
-            $table->decimal('valor_produto',10,2);
-            $table->string('imagem_produto');
+        Schema::create('estoque', function (Blueprint $table) {
+            $table->unsignedBigInteger('id_produto');
+            $table->foreign('id_produto')->references('id')->on('produtos');
+            $table->integer('quantidade_produto');
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('produtos');
+        Schema::dropIfExists('estoque');
     }
 };
