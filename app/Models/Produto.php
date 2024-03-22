@@ -16,7 +16,6 @@ class Produto extends Model
     ];
 
     protected $fillable = [
-        'user_id',
         'nome_produto',
         'descricao_produto',
         'valor_produto',

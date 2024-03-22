@@ -25,19 +25,16 @@ class ProdutoController extends Controller
     public function index()
     {
 
-        $produtos = Produto::all();
+        $user = auth()->user();
 
         return view('home', [
-            'produtos' => $produtos,
+            'user' => $user,
         ]);
     }
 
     public function store(Request $request)
     {
         $produto = new Produto();
-        $user = auth()->user();
-
-        $produto->user_id = $user->id;
         $produto->nome_produto = $request->input('nome-produto');
         $produto->descricao_produto = $request->input('descricao-produto');
         $produto->valor_produto = $request->input('valor-produto');
@@ -59,10 +56,10 @@ class ProdutoController extends Controller
 
         return redirect('/dashboard')->with('msg', 'Produto registrado com sucesso');
     }
-    public function show($id)
+    public function show()
     {
-        $produtos = Produto::all()->where('user_id', $id);
-        
+        $produtos = Produto::all();
+
         return view('produtos.show', [
             'produtos' => $produtos,
         ]);

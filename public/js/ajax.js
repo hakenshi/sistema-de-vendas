@@ -8,7 +8,6 @@ function destroy(button){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     })
-2
     $.ajax({
         type: "DELETE",
         url: `/produtos/meus-produtos/destroy/${idProduto}`,

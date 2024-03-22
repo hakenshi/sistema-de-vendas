@@ -13,10 +13,17 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <title>@yield('title')</title>
+
 </head>
 
 <body>
-    <header>
+
+    @auth
+        @php
+            $user = auth()->user();
+        @endphp
+    @endauth
+    {{--     <header>
 
         <nav class="navbar navbar-expand navbar-color">
             <div class="container">
@@ -52,19 +59,80 @@
                         <li class="p-2 nav-item">
                             <span><a href="/register" class="nav-link">Registro</a></span>
                         @endauth
-                        <li class="p-2 nav-item">
-                            <a href="" class="nav-link"><span>
-                                    <ion-icon class="icon" name="cart-outline"></ion-icon>
-                                </span></a>
-                        </li>
 
                     </ul>
                 </div>
             </div>
         </nav>
+    </header> --}}
 
-    </header>
+    <aside>
+        <div id="sidebar">
+            <div id="sidebar-content">
+                <div id="user">
+                    <img id="user_avatar" src="/assets/placeholder.png" alt="XD">
+
+                    <p id="user_infos">
+                        <span class="item-description">
+                            {{ $user->name }}
+                        </span>
+                        <span class="item-description">
+                            Tipo usuario
+                        </span>
+                    </p>
+                </div>
+                <ul id="side_items">
+                    <li class="side_item">
+                        <a href="/">
+                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                            <span class="item-description">Home</span>
+                        </a>
+                    </li>
+                    <li class="side_item">
+                        <a href="/produtos/registrar">
+                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                            <span class="item-description">Cadastrar Produtos</span>
+                        </a>
+                    </li>
+                    <li class="side_item">
+                        <a href="#">
+                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                            <span class="item-description">Ver usuarios</span>
+                        </a>
+                    </li>
+                    <li class="side_item">
+
+                        <a href="/register" class="nav-link">Registro</a>
+
+                        {{-- <a href="/register">
+                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                            <span class="item-description">Cadastrar usuarios</span>
+                        </a> --}}
+                    </li>
+                    <button id="open_btn"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+                </ul>
+
+                <div class="side_item">
+
+                    <form method="POST" action="/logout">
+                        @csrf
+                        <a href="/logout" class="nav-link"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                            <span class="item-description">Logout</span>
+                        </a>
+                    </form>
+
+                    {{-- <a href="#">
+                        <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                        <span class="item-description">Logout</span>
+                    </a> --}}
+                </div>
+            </div>
+        </div>
+    </aside>
     <main>
+
         <div class="container">
             <div class="row">
                 @yield('content')

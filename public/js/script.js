@@ -1,6 +1,10 @@
 $(() => {
     const imagemProduto = $("#image")
 
+    const openButton = $("#open_btn")
+
+    const sideItem = $(".side_item")
+
     imagemProduto.on('change', () => {
         const file = imagemProduto[0].files[0]
 
@@ -10,4 +14,10 @@ $(() => {
         }
     }
     )
+
+    openButton.on('click', ()=>{
+        $("#sidebar").toggleClass('open-sidebar')
+    })
+
+    
 })

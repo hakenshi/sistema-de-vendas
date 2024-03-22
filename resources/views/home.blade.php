@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-        <div class="main-container p-5">
+        {{-- <div class="main-container p-5">
             <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner" role="listbox">
                     <div class="carousel-item active">
@@ -62,7 +62,7 @@
                             </div>
                     </div>
                 </div>
-                {{-- <div class="row">
+                <div class="row">
                     <div class="col md-10 offset-1 py-5">
                         <h3>Produtos mais vendidos</h3>
                         <div class="img-container">
@@ -75,6 +75,6 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
-            </div>
+                </div>
+            </div> --}}
 @endsection

@@ -17,13 +17,13 @@ use Laravel\Jetstream\Rules\Role;
 |
 */
 
-Route::get('/',[ProdutoController::class, 'index']);
+Route::get('/',[UsuarioController::class, 'index'])->middleware('auth');
 
-Route::get('/produtos/registrar', [ProdutoController::class, 'registrar']);
+Route::get('/produtos/registrar', [ProdutoController::class, 'registrar'])->middleware('auth');
 
 Route::post('/produtos', [ProdutoController::class, 'store'])->middleware('auth');
 
-Route::get('/produtos/meus-produtos/{id}', [ProdutoController::class, 'show'])->middleware('auth');
+// Route::get('/produtos/produtos', [ProdutoController::class, 'show'])->middleware('auth');
 
 Route::delete('/produtos/meus-produtos/destroy/{id}', [ProdutoController::class, 'destroy'])->middleware('auth');
 
@@ -36,10 +36,10 @@ Route::get('/dashboard/minhas-informacoes/{id}', [UsuarioController::class, 'edi
 
 Route::put('/dashboard/minhas-informacoes/update/{id}', [UsuarioController::class, 'update'])->middleware('auth');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', [UsuarioController::class, 'index'])->name('dashboard');
-});
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/dashboard', [UsuarioController::class, 'index'])->name('dashboard');
+// });

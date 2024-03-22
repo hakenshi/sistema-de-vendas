@@ -11,6 +11,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $user = auth()->user();
+
         return view('usuario.dashboard', [
             'user' => $user
         ]);
@@ -55,8 +56,13 @@ class UsuarioController extends Controller
         return redirect('/dashboard')->with('msg', 'Informações atualizadas com sucesso');
     }
 
-    // public function update(Request $request){
-    //     $data = $request->all();
-    //     dd($data);
-    // }
+    public function show(){
+
+        $users = User::all();
+
+        return view('usuarios.show', [
+            'users' => $users
+        ]);
+    }
+
 }
