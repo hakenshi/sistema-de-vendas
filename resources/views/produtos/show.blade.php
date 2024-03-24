@@ -26,10 +26,10 @@
         <td><img class="product-image" src="/storage/server/{{ $produto->imagem_produto }}" alt="{{ $produto->nome_produto }}"></td>
         <td>{{ $produto->nome_produto }}</td>
         <td>{{ $produto->descricao_produto }}</td>
-        <td>{{ $produto->valor_produto }}</td>
+        <td>R$ {{ $produto->valor_produto }}</td>
         <td>
-          <a href="/produtos/meus-produtos/editar/{{ $produto->id }}" class="text-white btn btn-primary">Editar</a>
-          <button data-produto-id="{{ $produto->id }}" class="text-white btn btn-danger" onclick="destroy(this)">Excluir</button></td>
+          <a href="/produtos/editar/{{ $produto->id }}" class="text-white btn btn-primary">Editar</a>
+          <button data-id="{{ $produto->id }}" class="text-white btn btn-danger" onclick="destroy(this)">Excluir</button></td>
       </tr>
       @endforeach
     </tbody>

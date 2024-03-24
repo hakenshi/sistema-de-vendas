@@ -6,14 +6,14 @@
 
 <div class="form-container">
     
-    <div class="form-container-inner">
+    <div class="bg-white rounded-3 mt-4 pb-5 form-container-inner">
         <div class="col-md-10 offset-md-1">
             <div class="preview-container">
                 <img id="preview" class="img-fluid">
             </div>
         </div>
         <div class="col-md-10 offset-md-1 p-3">
-            <form action="/produtos" method="POST" enctype="multipart/form-data">
+            <form action="/cadastrar-produto" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-floating pb-3">
                     <input class="form-control" type="text" name="nome-produto" id="nome-produto"

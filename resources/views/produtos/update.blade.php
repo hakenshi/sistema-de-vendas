@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="col-md-10 offset-md-1 p-3">
-        <form method="POST" action="/produtos/meus-produtos/update/{{ $produto->id }}" enctype="multipart/form-data">
+        <form method="POST" action="/produtos/update/{{ $produto->id }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-floating pb-3">

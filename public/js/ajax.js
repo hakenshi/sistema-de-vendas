@@ -1,7 +1,6 @@
-function destroy(button){
-    const idProduto = button.getAttribute('data-produto-id')
 
-    const trObject = $(this)
+function destroy(button){
+    const id = button.getAttribute('data-id')
 
     $.ajaxSetup({
         headers: {
@@ -10,7 +9,7 @@ function destroy(button){
     })
     $.ajax({
         type: "DELETE",
-        url: `/produtos/meus-produtos/destroy/${idProduto}`,
+        url: `/delte-user/${id}`,
         dataType: "json",
         success: function (response) {
             alert(response.success);

@@ -18,8 +18,6 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
-    protected $table = 'users';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -27,9 +25,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'bio_info',
         'email',
+        'cpf',
         'password',
+        'status',
+        'user_type',
         'profile_photo_path',
     ];
 
@@ -40,14 +40,26 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
-        
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
+     */
     protected $appends = [
         'profile_photo_url',
     ];
-
-    public function venda(){
-        return $this->hasMany(Venda::class, 'id_usuario');
-    }
-
 }

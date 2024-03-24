@@ -29,14 +29,21 @@ class UsuarioController extends Controller
     public function update(Request $request)
     {
 
-        $user = User::findOrFail($request->id);
+        try {
+            $user = User::findOrFail($request->id);
+
+
 
         $data = [
-            'name' => $request->input('nome-usuario'),
-            'email' => $request->input('email-usuario'),
-            'bio_info' => $request->input('bio-usuario'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'cpf' => $request->input('cpf'),
+            'user_type' => $request->input('user_type'),
         ];
 
+        if (!empty($request->input('password'))) {
+            $data['password'] = bcrypt($request->input()['password']);
+        }
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
@@ -47,22 +54,64 @@ class UsuarioController extends Controller
 
             $data['profile_photo_path'] = $imageName;
 
-            $requestImage->storeAs('server/user_photos', $imageName);
-           
+            $requestImage->storeAs('sever/user_photos', $imageName);
         }
 
         $user->update($data);
 
-        return redirect('/dashboard')->with('msg', 'Informações atualizadas com sucesso');
+        return redirect('/')->with('msg', 'Informações atualizadas com sucesso');
+        } catch (\Exception $e) {
+        return redirect()->back()->with('msg', $e->getMessage() . ' Erro ao atualizar informações');
+        }
     }
 
-    public function show(){
+    public function register()
+    {
+        return view('usuario.register');
+    }
+    public function store(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->input('nome');
+        $user->email = $request->input('email');
+        $user->cpf = $request->input('cpf'); 
+        $user->password = bcrypt($request->input('password'));
+        $user->status = $request->input('status');
+        $user->user_type = $request->input('user_type');
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $requestImage = $request->image;
 
-        $users = User::all();
+            $extension = $requestImage->extension();
 
-        return view('usuarios.show', [
-            'users' => $users
+            $imageName = md5($requestImage->getClientOriginalName()) . '.' . $extension;
+
+            $data['profile_photo_path'] = $imageName;
+
+            $requestImage->storeAs('server/user_photos', $imageName);
+        }
+        $user->save();
+
+        return redirect('/')->with('msg', 'Usuario registrado com sucesso');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'success' => 'Usuário apagado com sucesso',
         ]);
     }
 
+
+    public function listUsers()
+    {
+
+        $users = User::all();
+
+        return view('usuario.show', [
+            'users' => $users
+        ]);
+    }
 }

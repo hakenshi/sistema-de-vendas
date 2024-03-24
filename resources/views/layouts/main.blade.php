@@ -16,55 +16,13 @@
 
 </head>
 
-<body>
+<body class="bg-light">
 
     @auth
         @php
             $user = auth()->user();
         @endphp
     @endauth
-    {{--     <header>
-
-        <nav class="navbar navbar-expand navbar-color">
-            <div class="container">
-                <div class="collapse navbar-collapse justify-content-between">
-                    <a href="/" class="navbar-brand p-3">
-                        <img src="/assets/laravel.svg" id="img-header" alt="">
-                        <span class="p-3">Home</span>
-                    </a>
-                    <ul class="navbar navbar-nav">
-                        @auth
-                        @php
-                            $user = auth()->user();
-                        @endphp
-                    </li>
-                    <li class="p-2 nav-item">
-                        <span><a href="/dashboard" class="nav-link">Olá, {{ $user->name }}.</a></span>
-                    </li>
-                    <li class="p-2 nav-item">
-                        <form method="POST" action="/logout">
-                            @csrf
-                            <span>
-                                <a href="/logout" class="nav-link" onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Sair
-                                </a>
-                            </span>
-                        </form>
-                    </li>
-                        
-                        @else
-                        <li class="p-2 nav-item">
-                            <span><a href="/login" class="nav-link">Login</a></span>
-                        </li>
-                        <li class="p-2 nav-item">
-                            <span><a href="/register" class="nav-link">Registro</a></span>
-                        @endauth
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header> --}}
 
     <aside>
         <div id="sidebar">
@@ -89,25 +47,34 @@
                         </a>
                     </li>
                     <li class="side_item">
-                        <a href="/produtos/registrar">
-                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                        <a href="/registrar-produto">
+                            <ion-icon class="icon" name="add" style="padding: 0"></ion-icon>
                             <span class="item-description">Cadastrar Produtos</span>
                         </a>
                     </li>
+
                     <li class="side_item">
-                        <a href="#">
-                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                        
+                        <a href="/listar-produtos" class="nav-link">
+                            <ion-icon class="icon" name="cube" style="padding: 0"></ion-icon>
+                            <span class="item-description">Registrar Usuário</span>
+                        </a>
+
+                    </li>
+
+                    <li class="side_item">
+                        <a href="/funcionarios">
+                            <ion-icon class="icon" name="person" style="padding: 0"></ion-icon>
                             <span class="item-description">Ver usuarios</span>
                         </a>
                     </li>
+                    
                     <li class="side_item">
-
-                        <a href="/register" class="nav-link">Registro</a>
-
-                        {{-- <a href="/register">
-                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
-                            <span class="item-description">Cadastrar usuarios</span>
-                        </a> --}}
+                        
+                        <a href="/register" class="nav-link">
+                            <ion-icon class="icon" name="person-add" style="padding: 0"></ion-icon>
+                            <span class="item-description">Registro</span>
+                        </a>
                     </li>
                     <button id="open_btn"><ion-icon name="chevron-forward-outline"></ion-icon></button>
                 </ul>
@@ -139,7 +106,7 @@
             </div>
         </div>
     </main>
-    <footer>
+    <footer class="mt-5">
         <small>&copy; project by: Felipe</small>
     </footer>
 
@@ -152,6 +119,7 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
     </script>
     <script src="/js/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="/js/script.js"></script>
     <script src="/js/ajax.js"></script>
 </body>

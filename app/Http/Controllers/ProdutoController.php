@@ -24,12 +24,7 @@ class ProdutoController extends Controller
 
     public function index()
     {
-
-        $user = auth()->user();
-
-        return view('home', [
-            'user' => $user,
-        ]);
+        return view('home');
     }
 
     public function store(Request $request)
@@ -73,8 +68,9 @@ class ProdutoController extends Controller
             $data = [
                 'nome_produto' => $request->input('nome-produto'),
                 'descricao_produto' => $request->input('descricao-produto'),
-                'valor_produto' => $request->input('valor-produto'),
+                'valor_produto' => str_replace(',', '.', $request->input('valor-produto')),
             ];
+
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $requestImage = $request->image;
@@ -92,7 +88,7 @@ class ProdutoController extends Controller
             }
 
             $produto->update($data);
-            return redirect('/dashboard')->with('msg', 'Produto atualizado com sucesso');
+            return redirect('/')->with('msg', 'Produto atualizado com sucesso');
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
