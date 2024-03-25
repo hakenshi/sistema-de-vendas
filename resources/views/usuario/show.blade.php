@@ -29,7 +29,7 @@
                     <td>{{ $user->user_type ? "Funcionario" : "Admin" }}</td>
                     <td>{{ date('d/m/Y, H:i', strtotime($user->created_at)) }}</td>
                     <td><a href="/edit-user/{{ $user->id }}" class="text-white btn btn-primary">Editar</a>
-                    <button data-id="{{ $user->id }}" class="text-white btn btn-danger" onclick="destroy(this)">Excluir</button></td>
+                    <button data-id="{{ $user->id }}" class="text-white btn btn-danger" onclick="destroy(this, '/delte-user/' + {{ $user->id }})">Excluir</button></td>
                   </tr>
             @endforeach
           </tbody>

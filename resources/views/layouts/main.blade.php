@@ -57,7 +57,7 @@
                         
                         <a href="/listar-produtos" class="nav-link">
                             <ion-icon class="icon" name="cube" style="padding: 0"></ion-icon>
-                            <span class="item-description">Registrar Usuário</span>
+                            <span class="item-description">Estoque</span>
                         </a>
 
                     </li>
@@ -73,7 +73,7 @@
                         
                         <a href="/register" class="nav-link">
                             <ion-icon class="icon" name="person-add" style="padding: 0"></ion-icon>
-                            <span class="item-description">Registro</span>
+                            <span class="item-description">Registrar usuário</span>
                         </a>
                     </li>
                     <button id="open_btn"><ion-icon name="chevron-forward-outline"></ion-icon></button>

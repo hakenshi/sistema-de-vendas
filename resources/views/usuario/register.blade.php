@@ -45,7 +45,7 @@
                     <label for="valor-produto">Tipo do funcionario</label>
                 </div>
                 <div class="form-group pb-3">
-                    <label for="image">Imagem do produto</label>
+                    <label for="image">Imagem do produto</label>-
                     <input class="form-control" type="file" name="image" id="image"
                         placeholder="Insira o imagem do produto">
                 </div>

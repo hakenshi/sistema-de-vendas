@@ -1,5 +1,5 @@
 
-function destroy(button){
+function destroy(button,url){
     const id = button.getAttribute('data-id')
 
     $.ajaxSetup({
@@ -9,7 +9,7 @@ function destroy(button){
     })
     $.ajax({
         type: "DELETE",
-        url: `/delte-user/${id}`,
+        url: url,
         dataType: "json",
         success: function (response) {
             alert(response.success);
