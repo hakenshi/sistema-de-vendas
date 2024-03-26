@@ -11,10 +11,6 @@ class Produto extends Model
 
     protected $table = 'produtos';
 
-    protected $casts = [
-        'items' => 'array'
-    ];
-
     protected $fillable = [
         'nome_produto',
         'descricao_produto',
@@ -22,12 +18,12 @@ class Produto extends Model
         'imagem_produto',
     ];
 
-    public function produto(){
+    public function produtos(){
         return $this->belongsToMany(Venda::class);
     }
 
     public function estoque(){
-        return $this->belongsTo(Estoque::class);
+        return $this->belongsTo(Estoque::class, 'id_produto', 'id');
     }
 
 }

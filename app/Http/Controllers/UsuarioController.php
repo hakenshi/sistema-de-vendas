@@ -54,7 +54,7 @@ class UsuarioController extends Controller
 
             $data['profile_photo_path'] = $imageName;
 
-            $requestImage->storeAs('sever/user_photos', $imageName);
+            $requestImage->storeAs('/profile-photos', $imageName);
         }
 
         $user->update($data);
@@ -87,7 +87,7 @@ class UsuarioController extends Controller
 
             $data['profile_photo_path'] = $imageName;
 
-            $requestImage->storeAs('server/user_photos', $imageName);
+            $requestImage->storeAs('/profile-photos', $imageName);
         }
         $user->save();
 

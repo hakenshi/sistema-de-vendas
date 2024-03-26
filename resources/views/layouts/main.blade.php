@@ -23,19 +23,19 @@
             $user = auth()->user();
         @endphp
     @endauth
-
     <aside>
         <div id="sidebar">
+
             <div id="sidebar-content">
                 <div id="user">
-                    <img id="user_avatar" src="/assets/placeholder.png" alt="XD">
+                    <img id="user_avatar" src="{{ $user->profile_photo_path ? '/storage/profile-photos/'. $user->profile_photo_path : '/assets/placeholder.png'  }}" alt="user-image">
 
                     <p id="user_infos">
                         <span class="item-description">
                             {{ $user->name }}
                         </span>
                         <span class="item-description">
-                            Tipo usuario
+                            {{ $user->user_type == 0 ? 'Admin' : 'Funcionário' }}
                         </span>
                     </p>
                 </div>
@@ -46,6 +46,7 @@
                             <span class="item-description">Home</span>
                         </a>
                     </li>
+                    @if ($user->user_type == 0)
                     <li class="side_item">
                         <a href="/registrar-produto">
                             <ion-icon class="icon" name="add" style="padding: 0"></ion-icon>
@@ -77,6 +78,17 @@
                         </a>
                     </li>
                     <button id="open_btn"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+                    @else
+
+                    <li class="side_item">
+                        <a href="/venda/nova-venda">
+                            <ion-icon class="icon" name="add" style="padding: 0"></ion-icon>
+                            <span class="item-description">Nova Venda</span>
+                        </a>
+                    </li>
+                    
+                    <button id="open_btn"><ion-icon name="chevron-forward-outline"></ion-icon></button>
+                    @endif
                 </ul>
 
                 <div class="side_item">
@@ -85,7 +97,7 @@
                         @csrf
                         <a href="/logout" class="nav-link"
                             onclick="event.preventDefault(); this.closest('form').submit();">
-                            <ion-icon class="icon" name="home" style="padding: 0"></ion-icon>
+                            <ion-icon class="icon" name="log-out-outline" style="padding: 0"></ion-icon>
                             <span class="item-description">Logout</span>
                         </a>
                     </form>
@@ -106,9 +118,9 @@
             </div>
         </div>
     </main>
-    <footer class="mt-5">
+    {{-- <footer class="mt-5">
         <small>&copy; project by: Felipe</small>
-    </footer>
+    </footer> --}}
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

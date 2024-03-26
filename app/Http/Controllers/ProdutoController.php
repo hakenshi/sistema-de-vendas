@@ -32,7 +32,7 @@ class ProdutoController extends Controller
         $produto = new Produto();
         $produto->nome_produto = $request->input('nome-produto');
         $produto->descricao_produto = $request->input('descricao-produto');
-        $produto->valor_produto = $request->input('valor-produto');
+        $produto->valor_produto = str_replace(',', '.',$request->input( 'valor-produto'));
 
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -49,7 +49,7 @@ class ProdutoController extends Controller
 
         $produto->save();
 
-        return redirect('/dashboard')->with('msg', 'Produto registrado com sucesso');
+        return redirect('/')->with('msg', 'Produto registrado com sucesso');
     }
     public function show()
     {

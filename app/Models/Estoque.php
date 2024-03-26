@@ -9,8 +9,15 @@ class Estoque extends Model
 {
     use HasFactory;
 
+    protected $table = 'estoque';
+
+    protected $fillable = [
+        'id_produto',
+        'quantidade_produto'
+    ];
+
     public function produto(){
-        return $this->hasMany(Produto::class);
+        return $this->hasMany(Produto::class, 'id_produto', 'id');
     }
 
 }

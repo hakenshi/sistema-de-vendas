@@ -3,17 +3,14 @@
 @section('title', 'Registrar Usuário')
 
 @section('content')
-
-<div class="form-container">
-    
-    <div class="bg-white rounded-3 mt-4 pb-5 form-container-inner">
+   
+    <div class="info-container flex-column mt-3 mb-3">
         <div class="col-md-10 offset-md-1">
             <div class="preview-container">
-                <img id="preview" class="img-fluid">
+                <img id="preview">
             </div>
         </div>
-        <div class="col-md-10 offset-md-1 p-3">
-            <form action="/register-user" method="POST" enctype="multipart/form-data">
+            <form class="p-3" action="/register-user" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-floating pb-3">
                     <input class="form-control" type="text" name="nome" id="nome"
@@ -31,6 +28,11 @@
                     <label for="cpf">CPF</label>
                 </div>
                 <div class="form-floating pb-3">
+                    <input class="form-control" type="text" name="data-nascimento" id="data-nascimento"
+                        placeholder="Insira a data de nascimento funcionario" autocomplete="off">
+                    <label for="data-nascimento">Data de nascimento</label>
+                </div>
+                <div class="form-floating pb-3">
                     <input class="form-control" type="password" name="password" id="password" placeholder="insira a senha do funcionário" autocomplete="off">
                     <label for="password">Senha</label>
                 </div>
@@ -45,15 +47,12 @@
                     <label for="valor-produto">Tipo do funcionario</label>
                 </div>
                 <div class="form-group pb-3">
-                    <label for="image">Imagem do produto</label>-
+                    <label for="image">Imagem do usuario</label>
                     <input class="form-control" type="file" name="image" id="image"
                         placeholder="Insira o imagem do produto">
                 </div>
                 <button class="btn btn-primary">Enviar</button>
-            </div>
             </form>
         </div>
-    
-</div>
-    
+        
 @endsection

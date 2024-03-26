@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProdutoController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\VendaController;
 use App\Models\Produto;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,9 @@ Route::post('/cadastrar-produto', [ProdutoController::class, 'store'])->middlewa
 Route::delete('/produtos/destroy/{id}', [ProdutoController::class, 'destroy'])->middleware('auth');
 Route::get('/produtos/editar/{id}', [ProdutoController::class, 'editar'])->middleware('auth');
 Route::put('/produtos/update/{id}', [ProdutoController::class, 'update'])->middleware('auth');
+
+// Rotas relacionadas as vendas
+
+Route::get('/venda/nova-venda', [VendaController::class, 'index'])->middleware('auth');
+Route::get('/vendas/nova-venda/{id}', [VendaController::class, 'addList'])->middleware('auth');
+Route::get('/venda/search', [VendaController::class, 'search'])->middleware('auth');
