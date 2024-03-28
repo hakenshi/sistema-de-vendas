@@ -58,7 +58,7 @@ class VendaController extends Controller
                 '<td> <input type="hidden" value="'.$produto->id.'">'.
                 '<td><img class="product-image" src="/storage/server/' . $produto->imagem_produto . '" alt="'.$produto->descricao_produto.'"></td>' .
                 '<td>' . $produto->nome_produto . '</td>' .
-                '<td> R$' . $produto->valor_produto . '</td>' .
+                '<td> R$ ' . $produto->valor_produto . '</td>' .
                 '<td><button type="button" data-id="'.$produto->id.'" class="btn btn-primary add-btn" onclick="addToList(this)"><ion-icon name="add-outline"></ion-icon></button>'. 
                 '</tr>';
             }
