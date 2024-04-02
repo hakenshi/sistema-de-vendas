@@ -35,12 +35,16 @@
             </tbody>
         </table>
         <div class="py-2 d-flex flex-row justify-content-between align-items-center">
-
-            <p id="total">Valor total: R$ 0.00 </p>
             
-           <span>Desconto: <input value="0" type="number" class="w-25"></span> 
+            <input type="hidden" name="total-input" id="total-input">
+            <p id="total">Valor total: R$ 0.00 </p>
 
-            <button class="btn btn-success">Encerrar</button>
+            <span>Desconto: <input id="desconto" min="1" max="100" value="0" type="number"
+                    class="w-25"></span>
+            <span>Quantidade Total: <input id="quantidade-total" type="text"
+                    class="w-25" disabled></span>
+
+            <button type="button" id="store" class="btn btn-success">Encerrar</button>
         </div>
     </div>
 @endsection

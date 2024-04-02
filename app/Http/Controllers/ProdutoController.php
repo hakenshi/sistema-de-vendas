@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Estoque;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,23 +18,22 @@ class ProdutoController extends Controller
     public function editar($id)
     {
         $produtos = Produto::FindOrFail($id);
+        $produtos->load('estoque')->where($id);
         return view('produtos.update', [
-            'produto' => $produtos
+            'produto' => $produtos,
         ]);
     }
 
-    public function index()
-    {
-        return view('home');
-    }
-
+    
     public function store(Request $request)
     {
         $produto = new Produto();
+        $estoque = new Estoque();
+        
         $produto->nome_produto = $request->input('nome-produto');
         $produto->descricao_produto = $request->input('descricao-produto');
+        $estoque->quantidade_produto = $request->input('quantidade-produto');
         $produto->valor_produto = str_replace(',', '.',$request->input( 'valor-produto'));
-
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
@@ -49,12 +49,16 @@ class ProdutoController extends Controller
 
         $produto->save();
 
+        $estoque->id_produto = $produto->id;
+        
+        $estoque->save();
+
         return redirect('/')->with('msg', 'Produto registrado com sucesso');
     }
     public function show()
     {
         $produtos = Produto::all();
-
+        
         return view('produtos.show', [
             'produtos' => $produtos,
         ]);
@@ -64,7 +68,7 @@ class ProdutoController extends Controller
     {
         try {
             $produto = Produto::findOrFail($request->id);
-
+            
             $data = [
                 'nome_produto' => $request->input('nome-produto'),
                 'descricao_produto' => $request->input('descricao-produto'),
@@ -88,6 +92,7 @@ class ProdutoController extends Controller
             }
 
             $produto->update($data);
+            
             return redirect('/')->with('msg', 'Produto atualizado com sucesso');
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -96,8 +101,8 @@ class ProdutoController extends Controller
 
     public function destroy($id){
         $produto = Produto::findOrFail($id);
-        $produto->delete();
-    
+        $produto->estoque()->delete();
+        $produto->delete();        
         return response()->json([
             'success' => 'Produto apagado com sucesso'
         ]);

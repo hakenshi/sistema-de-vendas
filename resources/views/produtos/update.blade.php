@@ -4,6 +4,8 @@
 
 @section('content')
 
+{{-- @dd($estoque) --}}
+
     <div class="col-md-10 offset-md-1">
         <div class="preview-container">
             <img src="/storage/server/{{ $produto->imagem_produto }}" id="preview" class="img-fluid">
@@ -22,6 +24,10 @@
                 <label for="descricao-produto">Descricao do produto</label>
                 <textarea class="form-control" type="text" name="descricao-produto" id="descricao-produto">{{ $produto->descricao_produto }}</textarea>
             </div>
+            <div class="form-group pb-3">
+                <label for="valor-produto">Quantidade</label>
+                <input class="form-control" value="{{ $produto->estoque->quantidade_produto }}" type="number" name="quantidade-produto" id="quantidade-produto">
+        </div>
             <div class="form-floating pb-3">
                 <input class="form-control" type="text" name="valor-produto" id="valor-produto"
                     placeholder="Insira o valor do produto" value="{{ $produto->valor_produto }}">

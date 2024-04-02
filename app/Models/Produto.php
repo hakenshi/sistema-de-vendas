@@ -23,7 +23,7 @@ class Produto extends Model
     }
 
     public function estoque(){
-        return $this->belongsTo(Estoque::class, 'id_produto', 'id');
+        return $this->belongsTo(Estoque::class, 'id', 'id_produto');
     }
-
+    
 }

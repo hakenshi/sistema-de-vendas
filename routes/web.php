@@ -28,3 +28,4 @@ Route::put('/produtos/update/{id}', [ProdutoController::class, 'update'])->middl
 Route::get('/venda/nova-venda', [VendaController::class, 'index'])->middleware('auth');
 Route::get('/vendas/nova-venda/{id}', [VendaController::class, 'addList'])->middleware('auth');
 Route::get('/venda/search', [VendaController::class, 'search'])->middleware('auth');
+Route::post('/venda/store', [VendaController::class, 'store'])->middleware('auth');

@@ -4,8 +4,8 @@
 
 @section('content')
 
+{{-- @vite('resources/css/app.css') --}}
     @if ($user->user_type == 0)
-        
    
     <div id="data-container">
         <div class="info-container">
@@ -21,7 +21,6 @@
                                 <p class="amout-value">
                                     0
                                 </p>
-
                             </div>
                         </div>
                     </div>
@@ -58,22 +57,40 @@
         <div class="info-container mt-3">
             <div class="container">
                 <h2 class="text-center p-3">Tabela de Vendas</h2>
-                <table class="table table-borde">
+                <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Produto</th>
-                            <th scope="col">Funcionário</th>
-                            <th scope="col">Valor da Venda</th>
-                            <th scope="col">Desconto</th>
-                            <th scope="col">Quantidade Vendida</th>
-                            <th scope="col">Hora da venda</th>
-                            <th scope="col"></th>
+                            <th class="text-center" scope="col">ID</th>
+                            <th class="text-center" scope="col">Funcionário</th>
+                            <th class="text-center" scope="col">Valor da Venda</th>
+                            <th class="text-center" scope="col">Desconto</th>
+                            <th class="text-center" scope="col">Quantidade Vendida</th>
+                            <th class="text-center" scope="col">Hora da venda</th>
+                            <th class="text-center" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
+
+                        {{-- @dd($vendas --}}
+                        
+                        @foreach ($vendas as $venda)
+                        
+                        <tr>
+                            <td class="text-center">{{ $venda->id }}</td>
+                            <td class="text-center">{{ $venda->nome }}</td>
+                            <td class="text-center">{{ $venda->valor_venda }}</td>
+                            <td class="text-center">{{ $venda->desconto }}%</td>
+                            <td class="text-center">{{ $venda->quantidade }}</td>
+                            <td class="text-center">{{ date( 'H:i', strtotime($venda->hora_venda)) }}</td>
+                            <td class="text-center"><button class="btn btn-info">Ver Mais</button></td>
+                        </tr>
+                        
+                        @endforeach
+                        
                     </tbody>
                 </table>
+                {{-- {{ $vendas->count() }} --}}
+                <div class="col-md-10 offset-md-5">{{ $vendas->links() }}</div>
             </div>
         </div>
     </div>
@@ -133,18 +150,32 @@
                 <table class="table table-borde">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Produto</th>
-                            <th scope="col">Valor da Venda</th>
-                            <th scope="col">Desconto</th>
-                            <th scope="col">Quantidade Vendida</th>
-                            <th scope="col">Hora da venda</th>
-                            <th scope="col"></th>
+                            {{-- <th class="text-center" scope="col">ID</th> --}}
+                            <th class="text-center" scope="col">Valor da Venda</th>
+                            <th class="text-center" scope="col">Desconto</th>
+                            <th class="text-center" scope="col">Quantidade Vendida</th>
+                            <th class="text-center" scope="col">Hora da venda</th>
+                            <th class="text-center" scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
+
+                        @foreach ($vendas as $venda)
+                        
+                        <tr>
+                            {{-- <td class="text-center">{{ $venda->id }}</td> --}}
+                            <td class="text-center">{{ $venda->valor_venda }}</td>
+                            <td class="text-center">{{ $venda->desconto }}%</td>
+                            <td class="text-center">{{ $venda->quantidade }}</td>
+                            <td class="text-center">{{ date( 'H:i', strtotime($venda->hora_venda)) }}</td>
+                            <td class="text-center"><button class="btn btn-info">Ver Mais</button></td>
+                        </tr>
+                        
+                        @endforeach
+
                     </tbody>
                 </table>
+                <div class="col-md-10 offset-md-5">{{ $vendas->links() }}</div>
             </div>
         </div>
     </div>

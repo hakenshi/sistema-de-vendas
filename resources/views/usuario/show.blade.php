@@ -34,6 +34,7 @@
             @endforeach
           </tbody>
         </table>
+        <div class="col-md-10 offset-md-5">{{ $users->links() }}</div>
       </div>
 </div>
 

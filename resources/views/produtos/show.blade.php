@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 <div class="info-container mt-5">
   <div class="container">
     <h2 class="text-center p-3">Estoque</h1>
@@ -28,6 +27,7 @@
           <td>{{ $produto->nome_produto }}</td>
           <td>{{ $produto->descricao_produto }}</td>
           <td>R$ {{ $produto->valor_produto }}</td>
+          <td>{{ $produto->estoque->quantidade_produto }}</td>
           <td>
             <a href="/produtos/editar/{{ $produto->id }}" class="text-white btn btn-primary">Editar</a>
             <button data-id="{{ $produto->id }}" class="text-white btn btn-danger" onclick="destroy(this, '/produtos/destroy/' + {{ $produto->id }})">Excluir</button></td>

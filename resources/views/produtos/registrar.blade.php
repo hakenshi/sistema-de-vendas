@@ -27,15 +27,14 @@
                         placeholder="Insira o valor do produto">
                     <label for="valor-produto">Valor do produto</label>
                 </div>
-                {{-- <div class="form-floating pb-3">
-                    <input class="form-control" type="number" name="quantidade-produto" id="quantidade-produto"
-                        placeholder="Insira o quantidade do produto">
-                    <label for="valor-produto">Quantidade</label>
-                </div> --}}
+                <div class="form-group pb-3">
+                        <label for="valor-produto">Quantidade</label>
+                        <input class="form-control" value="1" type="number" name="quantidade-produto" id="quantidade-produto">
+                </div>
                 <div class="form-group pb-3">
                     <label for="image">Imagem do produto</label>
                     <input class="form-control" type="file" name="image" id="image"
-                        placeholder="Insira o imagem do produto">
+                        placeholder="Insira o imagem do produto" accept=".png, .jpeg, ./jpg">
                 </div>
                 <button class="btn btn-primary">Enviar</button>
             </form>
