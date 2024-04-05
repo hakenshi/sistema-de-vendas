@@ -29,3 +29,6 @@ Route::get('/venda/nova-venda', [VendaController::class, 'index'])->middleware('
 Route::get('/vendas/nova-venda/{id}', [VendaController::class, 'addList'])->middleware('auth');
 Route::get('/venda/search', [VendaController::class, 'search'])->middleware('auth');
 Route::post('/venda/store', [VendaController::class, 'store'])->middleware('auth');
+Route::get('/venda/', [VendaController::class, 'showSellInfo'])->middleware('auth');
+Route::delete('/venda/delete/{id}', [VendaController::class, 'destroy'])->middleware('auth');
+Route::post('/venda/editar-venda/{id}', [VendaController::class, 'update']);

@@ -20,4 +20,9 @@ class ProdutoVenda extends Model
         'quantidade',
         'desconto_venda'
     ];
+
+    public function vendas(){
+        return $this->belongsToMany(Venda::class, 'produto_venda', 'produto_id', 'venda_id');
+    }
+
 }

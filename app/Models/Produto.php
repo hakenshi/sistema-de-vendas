@@ -18,12 +18,17 @@ class Produto extends Model
         'imagem_produto',
     ];
 
-    public function produtos(){
-        return $this->belongsToMany(Venda::class);
-    }
+    // public function produtos(){
+    //     return $this->belongsToMany(Venda::class);
+    // }
 
     public function estoque(){
         return $this->belongsTo(Estoque::class, 'id', 'id_produto');
     }
     
+    public function vendas(){
+        return $this->belongsToMany(Venda::class, 'produto_venda', 'id_produto', 'id_venda');
+    }
+    
+
 }

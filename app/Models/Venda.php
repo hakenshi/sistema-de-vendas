@@ -22,8 +22,12 @@ class Venda extends Model
         return $this->belongsTo(User::class, 'id');
     }
 
-    public function venda(){
-        return $this->belongsToMany(Produto::class);
+    // public function venda(){
+    //     return $this->belongsToMany(Produto::class)->withPivot('produto_venda');
+    // }
+
+    public function produtos(){
+        return $this->belongsToMany(Produto::class, 'produto_venda', 'id_venda', 'id_produto');
     }
 
 }

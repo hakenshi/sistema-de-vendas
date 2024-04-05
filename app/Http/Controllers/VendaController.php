@@ -27,8 +27,7 @@ class VendaController extends Controller
 
         try {
 
-            $produto = Produto::findOrFail($request->id)
-            ;
+            $produto = Produto::findOrFail($request->id);
 
             return response()->json([
                 'produto' => $produto,
@@ -100,16 +99,15 @@ class VendaController extends Controller
                         $produtoVenda->desconto_venda = $request->desconto;
                         $produtoVenda->save();
                         $estoque = Estoque::where('id_produto', $produto['produto']['id'])->first();
-                        if($estoque){
-                            if($estoque->quantidade_produto > 0){
-                            $novaQuantidade = $estoque->quantidade_produto - $request->quantidades[$i];
-                            $estoque->update(['quantidade_produto' => $novaQuantidade]);
-                            }
-                            else{
-                               return response()->json([
-                                'code' => 400,
-                                'mensagem' => throw new \Exception("Falha atualizar estoque, produto indisponível no estoque"),
-                               ]);
+                        if ($estoque) {
+                            if ($estoque->quantidade_produto > 0) {
+                                $novaQuantidade = $estoque->quantidade_produto - $request->quantidades[$i];
+                                $estoque->update(['quantidade_produto' => $novaQuantidade]);
+                            } else {
+                                return response()->json([
+                                    'code' => 400,
+                                    'mensagem' => throw new \Exception("Falha atualizar estoque, produto indisponível no estoque"),
+                                ]);
                             }
                         }
                     }
@@ -126,6 +124,55 @@ class VendaController extends Controller
                 'mensagem' => $e->getMessage(),
             ]);
         }
+    }
+
+    public function showSellInfo(Request $request)
+    {
+
+        if ($request->ajax()) {
+            $produtos = ProdutoVenda::join('produtos', 'produtos.id', '=', 'produto_venda.id_produto')
+                ->join('vendas', 'vendas.id', '=', 'produto_venda.id_venda')
+                ->where('id_venda', $request->id)
+                ->select(
+                    'vendas.id',
+                    'nome_produto',
+                    'descricao_produto',
+                    'valor_produto',
+                    'quantidade',
+                    'vendas.valor_venda',
+                    'desconto_venda as desconto',
+                    'vendas.created_at as hora_venda',
+                    'imagem_produto'
+                )
+                ->paginate(10);
+
+            return response()->json([
+                'produtos' => $produtos,
+            ]);
+        }
+    }
+
+
+    public function destroy($id){
+        $venda = Venda::findOrFail($id);
+        $venda->user()->delete();
+        $venda->produtos()->detach();
+        $venda->delete();
+
+        return response()->json([
+            'success' => 'Venda apagada com sucesso',
+        ]);
+
+    }
+
+    public function update(Request $request){
+
+        
+        if($request->ajax()){
+            $venda = Venda::findOrFail($request->id);
+            
+        }
+
     }
 
 
