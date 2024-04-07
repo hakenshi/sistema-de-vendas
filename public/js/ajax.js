@@ -6,17 +6,17 @@ const store = $("#store")
 
 const listaProduto = []
 
-const editarProdutosLista = []
+const editarListaProduto = []
 
 const quantidades = []
 
 const confirmationBtn = Swal.mixin({
     customClass: {
-      confirmButton: "btn btn-success",
-      cancelButton: "btn btn-danger"
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
     },
     buttonsStyling: false
-  });
+});
 
 $.ajaxSetup({
     headers: {
@@ -24,22 +24,46 @@ $.ajaxSetup({
     }
 })
 
-function removeFromList(button, valorProduto) {
+function removeFromList(button, valorProduto, array = []) {
     const tr = $(button).closest('tr')
     const indexToRemove = $(button).closest('tr').index()
     const quantidade = Number(tr.find('.quantidade').val())
-    listaProduto.splice(indexToRemove, 1)
-    const quantidadeAtual = $("#quantidade-total").val()
-    let total = $("#total").text().trim()
-    total = total.replace(/\s+/g, '').replace('ValorTotal:R$', '');
-    const totalFloat = parseFloat(total -= valorProduto *   quantidade)
 
-    $("#total").text(`Valor Total: R$ ${Math.round(totalFloat * 100) / 100}`);
+    const quantidadeAtual = $("#quantidade-total").val()
+    let total = $("#total-input").val()
+
+
+    // console.log(editarListaProduto)
+
+    if (editarListaProduto.length === 1) {
+        destroy(button, `/venda/delete/${editarListaProduto[0].id}`).then(() => {
+            tr.remove()
+
+            return
+        })
+
+    }
+
+
+    array.splice(indexToRemove, 1)
+
+    total -= valorProduto * quantidade
+
+    if (isNaN(total)) {
+        $("#total").text(`Valor Total: R$ 0.00`);
+    }
+
+    else {
+        $("#total-input").val(parseFloat(total).toFixed(2))
+        $("#total").text(`Valor Total: R$ ${parseFloat(total).toFixed(2)}`);
+    }
 
     $("#quantidade-total").val(quantidadeAtual - quantidade)
 
+
     tr.remove()
-    
+
+
 }
 
 function addToList(button) {
@@ -63,14 +87,20 @@ function addToList(button) {
                 $("#lista").empty().append(geraLista())
                 calculaQuantidade()
 
-                $(".quantidade").on('keypress keyup blur change', () => {
+                $(".quantidade").on('keypress keyup blur change input', () => {
                     calculaTotal()
                     calculaQuantidade()
                 })
-                desconto.on('keypress keyup blur change', () => {
-                    calculaTotal(desconto.val())
+                desconto.on('keypress keyup blur change input', () => {
+
+                    if ($(desconto).val() == "") $(desconto).val("0")
+
+                    calculaTotal($(desconto).val())
 
                 })
+
+
+
                 calculaTotal()
             }
 
@@ -92,7 +122,7 @@ function geraLista() {
         <input class="preco" type="hidden" value="${item.produto.valor_produto}">
         <td >R$ ${item.produto.valor_produto}</td>
         <td><div class="w-25"><input min="1" max="100" value="1" type="number" class="quantidade" name="quantidade" ></div></td>
-        <td><button class="btn btn-danger" onclick="removeFromList(this, ${item.produto.valor_produto})">Remover</button></td>
+        <td><button class="btn btn-danger" onclick="removeFromList(this, ${item.produto.valor_produto}, listaProduto)">Remover</button></td>
         </tr>
       `
         ))
@@ -102,11 +132,11 @@ function geraLista() {
 function calculaTotal(desconto = 0) {
     let total = 0;
 
-    $("#lista > tr").each(function () {  
+    $("#lista > tr").each(function () {
         const quantidade = $(this).find('.quantidade').val()
         const preco = $(this).find('.preco').val()
 
-        total += quantidade * preco * (1 - desconto / 100) 
+        total += quantidade * preco * (1 - desconto / 100)
 
     })
     $("#total-input").val(parseFloat(total).toFixed(2))
@@ -124,7 +154,7 @@ function calculaQuantidade() {
 
 function destroy(button, url) {
     const id = button.getAttribute('data-id')
-    
+
 
     confirmationBtn.fire({
         title: "Tem certeza que deseja excluir?",
@@ -133,8 +163,8 @@ function destroy(button, url) {
         confirmButtonText: 'Excluir',
         cancelButtonText: 'Cancelar',
         reverseButtons: true
-       }).then(result =>{
-        if(result.isConfirmed){
+    }).then(result => {
+        if (result.isConfirmed) {
             $.ajax({
                 type: "DELETE",
                 url: url,
@@ -144,7 +174,7 @@ function destroy(button, url) {
                         title: "Deletado com sucesso.",
                         text: response.success,
                         icon: 'success'
-                    }).then(()=>{
+                    }).then(() => {
                         location.reload()
                     })
                 },
@@ -153,29 +183,31 @@ function destroy(button, url) {
                 }
             });
         }
-        else if(result.dismiss === Swal.DismissReason.cancel){
+        else if (result.dismiss === Swal.DismissReason.cancel) {
             confirmationBtn.fire({
                 title: "Cancelado",
                 icon: "error"
             })
         }
 
-       })
+    })
 
-       
+
 
 }
 
 function showSellData(id) {
-    $("#modal-info").empty(); // Limpar o conteúdo antes de adicionar novos elementos
+    $("#lista").empty();
+
     $.ajax({
         type: "get",
         url: `/venda/`,
         data: { id: id },
         dataType: "json",
         success: function (response) {
+
             const produtosHtml = response.produtos.data.map(produto => {
-                listaProduto.push(produto)
+                editarListaProduto.push(produto)
                 return `
                     <tr>  
                         <td><img class="product-image" src="/storage/server/${produto.imagem_produto}" alt="{{ $produto->nome_produto }}"></td>
@@ -185,15 +217,21 @@ function showSellData(id) {
                         <td><span>R$ ${produto.valor_produto}</span></td>
                         <td><div class="w-25"><input min="1" disabled max="100" value="${produto.quantidade}" type="number" class="quantidade" name="quantidade" ></div></td>
                         <td class="hora-venda">${produto.hora_venda}</td>
-                    </tr>`;                    
+                    </tr>`;
             });
+            $("#quantidade-total").hide()
             $("#lista").html(produtosHtml.join(''));
-            $("lista").html(`<input id="id" type="hidden" value="${response.produtos.data[0].id}">`);
-            $("#total").html(`Valor total: R$ ${response.produtos.data[0].valor_venda}`);
+            $("lista").html(`<input id="id" type="hidden" value="${editarListaProduto[0].id}">`);
+            $("#total").html(`Valor total: R$ ${editarListaProduto[0].valor_venda}`);
+
+            $("#lista").append(`<td><input id="total-input" type="hidden" value="${parseFloat(editarListaProduto[0].valor_venda)}"> </td>`)
+            $("#total").append(`<td><input id="desconto" type="hidden" value="${editarListaProduto[0].valor_venda}"> </td>`)
+
             $(".quantidade").on('keypress keyup blur change', () => {
                 calculaTotal()
                 calculaQuantidade()
             })
+
         },
         error: (xhr, status, error) => {
             console.log(`xhr: ${xhr.error}\nstatus: ${status}\nerror: ${error}\n`);
@@ -253,55 +291,72 @@ store.on('click', e => {
     });
 })
 
-$("#edit-button").on('click', ()=>{
-
-    const quantiadade = listaProduto.map(item => item.valor_produto)
-
-
+$("#edit-button").on('click', () => {
+    calculaQuantidade()
+    const valorProduto = editarListaProduto.map(item => item.valor_produto)
+    // console.log(valor_produto)
+    $("#quantidade-total").show()
     $("#delete-button").hide()
     $("#edit-button").hide()
-    $(".hora-venda").each(function(){
+    $(".hora-venda").each(function () {
         $(this).hide()
     })
-    
-    $(".quantidade").each(function() { 
+
+    $(".quantidade").each(function () {
         $(this).removeAttr('disabled');
     });
-    
-    $(".modal-title").text("Editando venda")        
-    $(".modal-footer").append(`<btn id="save-changes" class="btn btn-success"> Salvar </button>`)
-    
 
-    $("#lista > tr").each(function(index, row) {
-        const quantidade = quantiadade[index];
+    $(".modal-title").text("Editando venda")
+    $(".modal-footer").append(`<btn id="save-changes" class="btn btn-success"> Salvar </button>`)
+
+
+    $("#lista > tr").each(function (index, row) {
+        const valor_produto = valorProduto[index];
         $(row).append(
             `<td>
-                <button class="btn btn-danger p-0" id="modal-delete-btn" onclick="removeFromList(this,${quantidade})">
+                <button class="btn btn-danger modal-delete-btn p-0" id="" onclick="removeFromList(this,${valor_produto},editarListaProduto)">
                     <ion-icon class="icon p-0" name="remove"></ion-icon>
                 </button>
             </td>`
         );
     });
-    
-    $("#save-changes").on('click', ()=>{
+
+    $("#save-changes").on('click', () => {
 
         const id = $("#id").val()
+        const quantidadeTotal = $("#quantidade-total").val()
+        const valorTotal = $("#total-input").val()
+        const quantidades = $("#lista > tr").map(function () {
+            return $(this).find('.quantidade').val();
+        }).get()
 
         $.ajax({
             type: "post",
             url: `/venda/editar-venda/${id}`,
-            data: {produtos: editarProdutosLista},
+            data: {
+                produtos: editarListaProduto,
+                quantidades: quantidades,
+                quantidadeTotal: quantidadeTotal,
+                valorTotal: valorTotal,
+            },
             dataType: "json",
             success: function (response) {
-                console.log(JSON.parse(response))
+
+                Swal.fire({
+                    icon: "success",
+                    title: response.success,
+                    showConfirmButton: true,
+                }).then(() => {
+
+                    location.reload()
+                })
+
+
+            },
+            error: (xhr, status, error) => {
+                console.log(`xhr: ${xhr.error}\nstatus: ${status}\nerror: ${error}\n`);
             }
         });
-    // }).then(()=>{
-    // $("#edit-button").show()
-    // $("#hora-venda").show()
-    // $("#hora-venda").show()
-    // $(".modal-title").text("Detalhes da venda")        
-
     })
 })
 

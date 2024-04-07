@@ -6,6 +6,7 @@ use App\Models\Estoque;
 use App\Models\Produto;
 use App\Models\ProdutoVenda;
 use App\Models\Venda;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -136,6 +137,7 @@ class VendaController extends Controller
                 ->select(
                     'vendas.id',
                     'nome_produto',
+                    'produto_venda.id_produto',
                     'descricao_produto',
                     'valor_produto',
                     'quantidade',
@@ -153,7 +155,8 @@ class VendaController extends Controller
     }
 
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $venda = Venda::findOrFail($id);
         $venda->user()->delete();
         $venda->produtos()->detach();
@@ -162,18 +165,45 @@ class VendaController extends Controller
         return response()->json([
             'success' => 'Venda apagada com sucesso',
         ]);
-
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+{
+    try {
+        if ($request->ajax()) {
+            $produtos = $request->produtos;
+            $id = $produtos[0]['id'];
 
-        
-        if($request->ajax()){
-            $venda = Venda::findOrFail($request->id);
-            
+            // Delete existing items related to the sale
+            ProdutoVenda::where('id_venda', $id)->delete();
+
+            // Insert updated items
+            foreach ($produtos as $i => $produto) {
+                ProdutoVenda::create([
+                    'id_venda' => $id,
+                    'id_produto' => $produto['id_produto'],
+                    'valor_venda' => $produto['valor_produto'],
+                    'quantidade' => $request->quantidades[$i],
+                    'desconto_venda' => $produto['desconto']
+                ]);
+            }
+
+            // Update sale information
+            $venda = Venda::findOrFail($id);
+            $venda->quantidade_venda = $request->quantidadeTotal;
+            // You might want to calculate the total value of the sale here based on the updated items.
+            $venda->update();
+
+            return response()->json([
+                'success' => 'Venda atualizada com sucesso',
+            ]);
         }
-
+    } catch (\Exception $e) {
+        return response()->json([
+            'code' => 400,
+            'mensagem' => $e->getMessage(),
+        ]);
     }
-
+}
 
 }

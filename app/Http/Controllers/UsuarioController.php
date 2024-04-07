@@ -40,12 +40,14 @@ class UsuarioController extends Controller
                 ->join('users', 'users.id', '=', 'vendas.id_usuario')
                 ->join('produto_venda', 'produto_venda.id_venda', '=', 'vendas.id')
                 ->select(
+                    'vendas.id',
                     'vendas.valor_venda',
                     'produto_venda.desconto_venda as desconto',
                     'vendas.quantidade_venda as quantidade',
                     'vendas.created_at as hora_venda'
                 )
                 ->where('vendas.created_at', ">=", SupportCarbon::now()->startOfDay())
+                ->where("users.id", $user->id)
                 ->orderByDesc('hora_venda')
                 ->distinct()
                 ->simplePaginate(6);
@@ -74,9 +76,6 @@ class UsuarioController extends Controller
 
         try {
             $user = User::findOrFail($request->id);
-
-
-
             $data = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
@@ -85,7 +84,7 @@ class UsuarioController extends Controller
             ];
 
             if (!empty($request->input('password'))) {
-                $data['password'] = bcrypt($request->input()['password']);
+                $data['password'] = bcrypt($request->input('password'));
             }
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
@@ -164,7 +163,6 @@ class UsuarioController extends Controller
             ->when($user_type == 1, function($query){
                 return $query
                 ->join('users', 'users.id', '=', 'vendas.id_usuario')
-                ->where('users.id', 'vendas.id_usuario')
                 ;
             })
             ->count('vendas.id');
@@ -179,7 +177,6 @@ class UsuarioController extends Controller
             ->when($user_type == 1, function($query){
                 return $query
                 ->join('users', 'users.id', '=', 'vendas.id_usuario')
-                ->where('users.id', 'vendas.id_usuario')
                 ;
             })
             ->sum('valor_venda');
@@ -190,16 +187,15 @@ class UsuarioController extends Controller
         $produto = ProdutoVenda::select('produto_venda.id_produto', 'produtos.nome_produto')
             ->join('produtos', 'produto_venda.id_produto', '=', 'produtos.id')
             ->join('vendas', 'produto_venda.id_venda', '=', 'vendas.id')
+            ->when($user_type == 1, function($query){
+                return $query
+                ->join('users', 'users.id', '=', 'vendas.id_usuario')
+                ;
+            })
             ->selectRaw('COUNT(*) as total_vendas')
             ->groupBy('produto_venda.id_produto', 'produtos.nome_produto')
             ->orderByDesc('total_vendas')
             ->where('vendas.created_at', ">=", SupportCarbon::now()->startOfDay())
-            ->when($user_type == 1, function($query){
-                return $query
-                ->join('users', 'users.id', '=', 'vendas.id_usuario')
-                ->where('users.id', 'vendas.id_usuario')
-                ;
-            })
             ->first();
 
         return $produto;

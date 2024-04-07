@@ -87,6 +87,12 @@
                                 <span class="item-description">Nova Venda</span>
                             </a>
                         </li>
+                        <li class="side_item">
+                            <a href="/edit-user/{{ $user->id }}">
+                                <ion-icon class="icon" name="pencil" style="padding: 0"></ion-icon>
+                                <span class="item-description">Editar</span>
+                            </a>
+                        </li>
 
                         <button id="open_btn"><ion-icon name="chevron-forward-outline"></ion-icon></button>
                     @endif

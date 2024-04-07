@@ -103,10 +103,9 @@
                                                     <div class="modal-body">
                                                         <table class="table">
                                                             <tbody id="lista">
-
-
-
+                                                                
                                                             </tbody>
+
                                                         </table>
                                                     </div>
                                                     <div class="modal-footer justify-content-between">
@@ -114,10 +113,13 @@
                                                             <span id="total"></span>
                                                         </div>
                                                         <div>
+                                                            <input id="quantidade-total" type="text" class="w-25"
+                                                                    disabled></span>
                                                             <button id="edit-button" class="btn btn-info">Editar</button>
                                                             <button type="button"
                                                                 onclick="destroy(this,'/venda/delete/{{ $venda->id }}')"
                                                                 class="btn btn-danger" id="delete-button">Apagar</button>
+                                                                
                                                         </div>
                                                     </div>
                                                 </div>
@@ -147,7 +149,7 @@
                                         Meu total de vendas:
                                     </p>
                                     <p class="amout-value">
-                                        0
+                                        {{ $totalVendas }}
                                     </p>
 
                                 </div>
@@ -160,7 +162,8 @@
                                         Valor total de vendas:
                                     </p>
                                     <p class="amout-value">
-                                        R$ 5.00 <ion-icon name="cash-outline"></ion-icon>
+                                        R$ {{ $valorTotal == 0 ? '0.00' : $valorTotal }} <ion-icon
+                                            name="cash-outline"></ion-icon>
                                     </p>
 
                                 </div>
@@ -173,7 +176,7 @@
                                         Produto mais vendido:
                                     </p>
                                     <p class="amout-value">
-                                        nome do produto
+                                        {{ $produtoMaisVendido == null ? 'Não há produtos' : $produtoMaisVendido->nome_produto }}
                                     </p>
 
                                 </div>
@@ -201,32 +204,54 @@
 
                             @foreach ($vendas as $venda)
                                 <tr>
-                                    {{-- <td class="text-center">{{ $venda->id }}</td> --}}
                                     <td class="text-center">{{ $venda->valor_venda }}</td>
                                     <td class="text-center">{{ $venda->desconto }}%</td>
                                     <td class="text-center">{{ $venda->quantidade }}</td>
                                     <td class="text-center">{{ date('d/m/Y H:i', strtotime($venda->hora_venda)) }}</td>
-                                    <td class="text-center"><button class="btn btn-info">Ver Mais</button></td>
-                                    <div class="modal fade" id="exampleModal" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    hello mom
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <td class="text-center"><!-- Button trigger modal -->
+                                        <button type="button" onclick="showSellData({{ $venda->id }})"
+                                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Detalhes
+                                        </button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="exampleModal" tabindex="-1"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Detalhes da
+                                                            venda</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <table class="table">
+                                                            <tbody id="lista">
+                                                                
+                                                            </tbody>
+
+                                                        </table>
+                                                    </div>
+                                                    <div class="modal-footer justify-content-between">
+                                                        <div>
+                                                            <span id="total"></span>
+                                                        </div>
+                                                        {{-- <div>
+                                                            <input id="quantidade-total" type="text" class="w-25"
+                                                                    disabled></span>
+                                                            <button id="edit-button" class="btn btn-info">Editar</button>
+                                                            <button type="button"
+                                                                onclick="destroy(this,'/venda/delete/{{ $venda->id }}')"
+                                                                class="btn btn-danger" id="delete-button">Apagar</button>
+                                                                
+                                                        </div> --}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                    </td>
                                 </tr>
                             @endforeach
 

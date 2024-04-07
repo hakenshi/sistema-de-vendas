@@ -7,7 +7,7 @@
     <div class="|">
         <div class="col-md-10 offset-md-1">
             <div class="preview-container">
-                <img src="/profile-photos/{{ $user->profile_photo_path }}" id="preview" class="img-fluid">
+                <img src="{{ $user->profile_photo_path ? '/storage/profile-photos/' . $user->profile_photo_path : '/assets/placeholder.png' }}" id="preview" class="img-fluid">
             </div>
         </div>
 
@@ -35,7 +35,7 @@
                     <label for="senha-usuario">CPF</label>
                 </div>
                 <div class="form-floating pb-3">
-                    <input class="form-control" type="password" name="password-usuario" id="password"
+                    <input class="form-control" type="password" name="password" id="password"
                         placeholder="password">
                     <label for="password-usuario">Senha</label>
                 </div>
