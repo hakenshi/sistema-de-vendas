@@ -19,6 +19,7 @@ class ProdutoController extends Controller
     {
         $produtos = Produto::FindOrFail($id);
         $produtos->load('estoque')->where($id);
+        
         return view('produtos.update', [
             'produto' => $produtos,
         ]);
@@ -57,8 +58,7 @@ class ProdutoController extends Controller
     }
     public function show()
     {
-        $produtos = Produto::all();
-        
+        $produtos = Produto::all()->load('estoque');
         return view('produtos.show', [
             'produtos' => $produtos,
         ]);
@@ -102,6 +102,7 @@ class ProdutoController extends Controller
     public function destroy($id){
         $produto = Produto::findOrFail($id);
         $produto->estoque()->delete();
+        $produto->vendas()->detach();
         $produto->delete();        
         return response()->json([
             'success' => 'Produto apagado com sucesso'

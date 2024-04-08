@@ -172,26 +172,30 @@ class VendaController extends Controller
     try {
         if ($request->ajax()) {
             $produtos = $request->produtos;
-            $id = $produtos[0]['id'];
 
-            // Delete existing items related to the sale
+            // dd($produtos);
+            $id = $produtos[0]['id'];
+            $venda = Venda::findOrFail($id);
+            // dd($venda);
+
+            // // dd($produtos);
+
             ProdutoVenda::where('id_venda', $id)->delete();
 
-            // Insert updated items
             foreach ($produtos as $i => $produto) {
                 ProdutoVenda::create([
                     'id_venda' => $id,
                     'id_produto' => $produto['id_produto'],
-                    'valor_venda' => $produto['valor_produto'],
+                    'valor_venda' => $request->valorTotal,
                     'quantidade' => $request->quantidades[$i],
                     'desconto_venda' => $produto['desconto']
                 ]);
             }
 
-            // Update sale information
-            $venda = Venda::findOrFail($id);
+
+
             $venda->quantidade_venda = $request->quantidadeTotal;
-            // You might want to calculate the total value of the sale here based on the updated items.
+            $venda->valor_venda = $request->valorTotal;
             $venda->update();
 
             return response()->json([

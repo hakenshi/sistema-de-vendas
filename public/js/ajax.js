@@ -91,9 +91,9 @@ function addToList(button) {
                     calculaTotal()
                     calculaQuantidade()
                 })
-                desconto.on('keypress keyup blur change input', () => {
+                desconto.on('keypress keyup blur change', () => {
 
-                    if ($(desconto).val() == "") $(desconto).val("0")
+                    // if ($(desconto).val() == "") $(desconto).val("0")
 
                     calculaTotal($(desconto).val())
 
@@ -219,13 +219,14 @@ function showSellData(id) {
                         <td class="hora-venda">${produto.hora_venda}</td>
                     </tr>`;
             });
+            
             $("#quantidade-total").hide()
             $("#lista").html(produtosHtml.join(''));
             $("lista").html(`<input id="id" type="hidden" value="${editarListaProduto[0].id}">`);
             $("#total").html(`Valor total: R$ ${editarListaProduto[0].valor_venda}`);
 
-            $("#lista").append(`<td><input id="total-input" type="hidden" value="${parseFloat(editarListaProduto[0].valor_venda)}"> </td>`)
-            $("#total").append(`<td><input id="desconto" type="hidden" value="${editarListaProduto[0].valor_venda}"> </td>`)
+            $("#lista").append(`<td><input id="total-input" type="text" value="${parseFloat(editarListaProduto[0].valor_venda)}"> </td>`)
+            $("#total").append(`<td><input id="desconto" type="text" value="${editarListaProduto[0].valor_venda}"> </td>`)
 
             $(".quantidade").on('keypress keyup blur change', () => {
                 calculaTotal()
@@ -347,7 +348,6 @@ $("#edit-button").on('click', () => {
                     title: response.success,
                     showConfirmButton: true,
                 }).then(() => {
-
                     location.reload()
                 })
 

@@ -4,6 +4,8 @@
 
 @section('content')
 
+{{-- @dd($produtos) --}}
+
 <div class="info-container mt-5">
   <div class="container">
     <h2 class="text-center p-3">Estoque</h1>
